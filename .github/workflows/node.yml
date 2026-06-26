@@ -23,3 +23,13 @@ jobs:
       - name: Install Ansible
         run: |
           pip install ansible==14.0.0
+
+        # Set up SSH key for connecting to target hosts
+      - name: Configure SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.TARGET_HOST }} >> ~/.ssh/known_hosts
+
+    
