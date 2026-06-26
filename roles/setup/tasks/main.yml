@@ -1,0 +1,5 @@
+- name: Update all Debian/Ubuntu packages to their latest version
+  apt:
+    update_cache: yes
+    upgrade: yes
+  tags: base
