@@ -1,0 +1,26 @@
+- name: Remove old checkout
+  ansible.builtin.file:
+    path: /tmp/checkout
+    state: absent
+- name: Clone the repository
+  git:
+    repo: "https://{{ github_user }}:{{ github_token }}@github.com/NolifekNTB/SimpleNodeJsService"
+    dest: /tmp/checkout
+- name: Make sure npm is installed
+  apt:
+    name: npm
+    state: present
+- name: Make sure nodejs is installed
+  apt:
+    name: nodejs
+    state: present
+- name: Start the application
+  command:                    # Start the Node.js app
+    chdir: /tmp/checkout
+    cmd: node node.js
+  async: 1000                 # Run the command asynchronously
+  poll: 0                     # Do not wait for the command to finish
+- name: Ensure app is running
+  shell: ps aux | grep node   # Check if the app is running
+  register: app_status        # Register the output of the command as a variable
+- debug: msg={{app_status.stdout_lines}} # Print the output of the previous task for debugging purposes
