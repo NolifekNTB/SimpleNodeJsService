@@ -1,0 +1,6 @@
+all:
+  hosts:
+    server_one:
+      ansible_host: ${{ secrets.TARGET_HOST }}
+      ansible_user: ${{ secrets.ANSIBLE_USER }}
+      ansible_ssh_private_key_file: ~/.ssh/id_rsa
