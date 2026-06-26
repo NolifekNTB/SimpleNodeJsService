@@ -32,4 +32,10 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.TARGET_HOST }} >> ~/.ssh/known_hosts
 
-    
+      # Write the vault password to a file for ansible-vault
+      - name: Set up Ansible Vault password
+        run: echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > .vault_password
+
+      - name: Run Ansible playbook
+        run: |
+          ansible-playbook ansible-playbook.yml --vault-password-file .vault_password
